@@ -9,10 +9,10 @@ main:
     mov r5, #8           @ Almacena el resultado en r3
 
     sub sp, sp, #16      @ Reserva espacio para cuatro palabras (4 * 4 bytes = 16 bytes) en la pila
-    str r5, [sp, #8]     @ Almacena el segundo operando en la pila
-    str r2, [sp, #4]     @ Almacena el operador en la pila
-    str r1, [sp]    @ Almacena el primer operando en la pila
-    mov r3, r0
+    str r5, [sp, #8]     @ Almacena el resultado dos words adelante del stack pointer
+    str r2, [sp, #4]     @ Almacena el segundo termino una word adelante del stack pointer
+    str r1, [sp]         @ Almacena el operador en la word del stack pointer
+    mov r3, r0		 @ Almacena el primer termino una word antes del stack pointer
 
     mov r0, #0           @ Columna para PrintF
     mov r1, #0           @ Fila para PrintF
