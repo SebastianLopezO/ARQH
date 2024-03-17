@@ -10,35 +10,27 @@ main:
     
     cmp r2,#'+'
     beq sum
-    	cmp r2,#'-'
-	beq subtract
-		cmp r2,#'*'
-		beq multiply
-			cmp r2,#'/'
-			beq divide
-				@ Finalizar el programa
-    				mov r0, #0
-    				bx lr
-		            @ Llama a la subrutina sum
+    cmp r2,#'-'
+    beq subtract
+    cmp r2,#'*'
+    beq multiply
+    cmp r2,#'/'
+    beq divide
   
-    bl print_result    @ Imprime el resultado
-
-    @ Finalizar el programa
-    mov r0, #0
-    bx lr
+    b stop
 
 sum:
     	add r3, r0, r1     @ Suma los operandos
-   	bx lr              @ Retorna
+   	b print_result
 
 subtract:
 	sub r3, r0, r1     @ Resta el segundo operando al primero
-	bx lr              @ Retorna
+	b print_result
 
 multiply:
     mov r3,r0
     mul r3, r1     @ Multiplica los operandos
-    bx lr              @ Retorna
+    b print_result
 
 divide:
     mov r4,r0
@@ -47,7 +39,7 @@ divide:
     mov r3,r0
     mov r0,r4
     mov r1,r5
-    bx lr              @ Retorna
+    b print_result
 
 print_result:
     sub sp, sp, #16      @ Reserva espacio para cuatro palabras (4 * 4 bytes = 16 bytes) en la pila
