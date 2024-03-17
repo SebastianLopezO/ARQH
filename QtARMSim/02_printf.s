@@ -6,7 +6,7 @@ str:	.asciz "%d dividido entre %d es igual a: %d"
 	mov r4, r0
 	mov r1, #2
 	mov r5, r1
-	bl  sdivide     @ Divide 50 entre 2
+	mov r0, #25
 	sub sp, sp, #8
 	str r0, [sp, #4]
 	str r5, [sp]
