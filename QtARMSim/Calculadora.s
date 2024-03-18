@@ -1,5 +1,5 @@
 	.data
-str: 	.asciz "Operando: %d %c %d = %d.%d"
+str_f: 	.asciz "Operando: %d %c %d = %d.%d"
 
 	.text
 main:
@@ -51,15 +51,15 @@ divide:
 
 print_result:
     sub sp, sp, #16       @ Reserva espacio para cuatro palabras (4*4 bytes = 16 bytes) en la pila
-    str r4, [sp, #12]     @ Almacena el resultado decimal en la tercera words adelante del stack pointer
-    str r3, [sp, #8]      @ Almacena el resultado en la segunda word adelante del stack pointer
-    str r1, [sp, #4]      @ Almacena el segundo termino en la primer word del stack pointer
-    str r2, [sp]          @ Almacena el operador en la word del stack pointer
-    mov r3, r0		  @ Almacena el primer termino una word antes del stack pointer
+    str r4, [sp, #12]     @ Almacena el resultado decimal en la tercera words adelante del stack pointer, mediante str
+    str r3, [sp, #8]      @ Almacena el resultado en la segunda word adelante del stack pointer, mediante str
+    str r1, [sp, #4]      @ Almacena el segundo termino en la primer word del stack pointer, mediante str
+    str r2, [sp]          @ Almacena el operador en la word del stack pointer, mediante str
+    mov r3, r0		  @ Almacena el primer termino una word antes del stack pointer, mediante str
 
     mov r0, #0           @ Columna para PrintF
     mov r1, #0           @ Fila para PrintF
-    ldr r2, =str         @ Carga la dirección de la cadena de formato en r2
+    ldr r2, =str_f         @ Carga la dirección de la cadena de formato en r2
     bl printf            @ Llama a printf para imprimir la cadena formateada
 
     add sp, sp, #16      @ Restaura el puntero de pila después de usarla
