@@ -51,10 +51,10 @@ divide:
 
 print_result:
     sub sp, sp, #16       @ Reserva espacio para cuatro palabras (4*4 bytes = 16 bytes) en la pila
-    str r4, [sp, #12]     @ Almacena el resultado cuarta words adelante del stack pointer
-    str r3, [sp, #8]      @ Almacena el segundo termino en la segunda word adelante del stack pointer
-    str r1, [sp, #4]      @ Almacena el operador en la primer word del stack pointer
-    str r2, [sp]          @ Almacena el primer decimal en la word del stack pointer
+    str r4, [sp, #12]     @ Almacena el resultado decimal en la tercera words adelante del stack pointer
+    str r3, [sp, #8]      @ Almacena el resultado en la segunda word adelante del stack pointer
+    str r1, [sp, #4]      @ Almacena el segundo termino en la primer word del stack pointer
+    str r2, [sp]          @ Almacena el operador en la word del stack pointer
     mov r3, r0		  @ Almacena el primer termino una word antes del stack pointer
 
     mov r0, #0           @ Columna para PrintF
