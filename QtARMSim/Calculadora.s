@@ -50,7 +50,7 @@ divide:
     b print_result
 
 print_result:
-    sub sp, sp, #32       @ Reserva espacio para cinco palabras (2^5 bytes = 32 bytes) en la pila
+    sub sp, sp, #16       @ Reserva espacio para cuatro palabras (4*4 bytes = 16 bytes) en la pila
     str r4, [sp, #12]     @ Almacena el resultado cuarta words adelante del stack pointer
     str r3, [sp, #8]      @ Almacena el segundo termino en la segunda word adelante del stack pointer
     str r1, [sp, #4]      @ Almacena el operador en la primer word del stack pointer
