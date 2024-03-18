@@ -1,12 +1,9 @@
 	.data
-str: 	.asciz "Operando: %d %c %d = %d"
+str: 	.asciz "Operando: %d %c %d = %d.%d"
 
 	.text
 main:
-    @ Ingresar operandos y operador manualmente
-    mov r0,#'n'
-    mov r1,#'n'
-    mov r2,#'o'
+
     
     cmp r2,#'+'
     beq sum
@@ -35,18 +32,30 @@ multiply:
 divide:
     mov r4,r0
     mov r5,r1
+    mov r6,#10
     bl sdivide
-    mov r3,r0
+    mov r7,r0
+    mul r1, r6
+    mov r0,r1
+    mov r1,r5
+    bl sdivide
+    mov r6, r0
     mov r0,r4
     mov r1,r5
+    mov r2,#'/'
+    mov r3,r7
+    mov r4,r6
+    
+     
     b print_result
 
 print_result:
-    sub sp, sp, #16      @ Reserva espacio para cuatro palabras (4 * 4 bytes = 16 bytes) en la pila
-    str r3, [sp, #8]     @ Almacena el resultado dos words adelante del stack pointer
-    str r1, [sp, #4]     @ Almacena el segundo termino una word adelante del stack pointer
-    str r2, [sp]         @ Almacena el operador en la word del stack pointer
-    mov r3, r0		 @ Almacena el primer termino una word antes del stack pointer
+    sub sp, sp, #32       @ Reserva espacio para cinco palabras (2^5 bytes = 32 bytes) en la pila
+    str r4, [sp, #12]     @ Almacena el resultado cuarta words adelante del stack pointer
+    str r3, [sp, #8]      @ Almacena el segundo termino en la segunda word adelante del stack pointer
+    str r1, [sp, #4]      @ Almacena el operador en la primer word del stack pointer
+    str r2, [sp]          @ Almacena el primer decimal en la word del stack pointer
+    mov r3, r0		  @ Almacena el primer termino una word antes del stack pointer
 
     mov r0, #0           @ Columna para PrintF
     mov r1, #0           @ Fila para PrintF
@@ -54,6 +63,6 @@ print_result:
     bl printf            @ Llama a printf para imprimir la cadena formateada
 
     add sp, sp, #16      @ Restaura el puntero de pila después de usarla
-    bx lr
+    b stop
 
 stop:	wfi
