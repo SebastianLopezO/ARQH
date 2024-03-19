@@ -60,14 +60,23 @@ divide:
     	bl sdivide @ Implementar sdivide con r0,r1, dejando r0 como resultado y r1 como residuo
 	ldr r3,=res
 	str r0,[r3]
-    	mul r1, r6 @ Multiplica el Residuo por la base numerica
 	@ Calcular Primer Decimal
+	mul r1, r6 @ Multiplica el Residuo por la base numerica
     	mov r0,r1 @ Guarda el residuo*base n en r0 para sdivide, como nuevo dividendo
 	ldr r3,=num2
 	ldr r1,[r3] @ Carga el mismo divisor previamente guardado
     	bl sdivide @ Implementa sdivide con r0,r1, dando r0 como resultado y r1 como residuo
 	ldr r3,=dec1
 	str r0,[r3] @ Guarda el Primer Decimal en Memoria
+
+	@ Calcular Segundo Decimal
+	mul r1, r6 @ Multiplica el Residuo por la base numerica
+    	mov r0,r1 @ Guarda el residuo*base n en r0 para sdivide, como nuevo dividendo
+	ldr r3,=num2
+	ldr r1,[r3] @ Carga el mismo divisor previamente guardado
+    	bl sdivide @ Implementa sdivide con r0,r1, dando r0 como resultado y r1 como residuo
+	ldr r3,=dec2
+	str r0,[r3] @ Guarda el Segundo Decimal en Memoria
 
 
     	@ Imprimir
