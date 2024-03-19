@@ -1,10 +1,15 @@
 	.data
+num1:	.word 0
+num2: 	.word 0
+ope:	.word 0
+res:	.word 0
+dec1:	.word 0
+dec2:	.word 0
 str_f: 	.asciz "Operando: %d %c %d = %d.%d"
+
 
 	.text
 main:
-
-    
     cmp r2,#'+'
     beq sum
     cmp r2,#'-'
@@ -49,6 +54,8 @@ divide:
      
     b print_result
 
+
+
 print_result:
     sub sp, sp, #16       @ Reserva espacio para cuatro palabras (4*4 bytes = 16 bytes) en la pila
     str r4, [sp, #12]     @ Almacena el resultado decimal en la tercera words adelante del stack pointer, mediante str
@@ -64,5 +71,16 @@ print_result:
 
     add sp, sp, #16      @ Restaura el puntero de pila después de usarla
     b stop
+
+read:
+	b stop
+
+write:
+	ldr r4, =num1
+	ldr r5, =num2
+        ldr r6, =ope
+	str r0, [r4]
+	str r1, [r5]
+	str r2, [r6]
 
 stop:	wfi
