@@ -1,4 +1,8 @@
 	.data
+
+	@ --------------
+	@ Inicialización
+	@ --------------
 num1:	.word 0
 num2: 	.word 0
 ope:	.word 0
@@ -9,17 +13,28 @@ str_f: 	.asciz "Operando: %d %c %d = %d.%d"
 
 
 	.text
+
+	@ --------------
+	@ Programa Invocador
+	@ --------------
+
 main:
-    cmp r2,#'+'
-    beq sum
-    cmp r2,#'-'
-    beq subtract
-    cmp r2,#'*'
-    beq multiply
-    cmp r2,#'/'
-    beq divide
-  
-    b stop
+    	bl write
+    	cmp r2,#'+'
+    	beq sum
+    	cmp r2,#'-'
+    	beq subtract
+    	cmp r2,#'*'
+    	beq multiply
+    	cmp r2,#'/'
+    	beq divide
+    	b stop
+
+stop:	wfi
+
+	@ --------------
+	@ Subrutinas
+	@ --------------
 
 sum:
     	add r3, r0, r1     @ Suma los operandos
@@ -30,29 +45,29 @@ subtract:
 	b print_result
 
 multiply:
-    mov r3,r0
-    mul r3, r1     @ Multiplica los operandos
-    b print_result
+    	mov r3,r0
+    	mul r3, r1     @ Multiplica los operandos
+    	b print_result
 
 divide:
-    mov r4,r0
-    mov r5,r1
-    mov r6,#10
-    bl sdivide
-    mov r7,r0
-    mul r1, r6
-    mov r0,r1
-    mov r1,r5
-    bl sdivide
-    mov r6, r0
-    mov r0,r4
-    mov r1,r5
-    mov r2,#'/'
-    mov r3,r7
-    mov r4,r6
-    
-     
-    b print_result
+    	mov r4,r0 @ Guardar Dividendo, para evitar sobreescribir
+    	mov r5,r1 @ Guardar Divisor, para evitar sobreescribir
+    	mov r6,#10 @ Inicilizar base numerica
+    	bl sdivide @ Implementar sdivide con r0,r1, dejando r0 como resultado y r1 como residuo
+    	mov r7,r0 @ Guarda resultado Original en r0, para evitar sobreescribir
+    	mul r1, r6 @ Multiplica el Residuo por la base numerica
+	@ Calcular Primer Decimal
+    	mov r0,r1 @ Guarda el residuo*base n en r0 para sdivide, como nuevo dividendo
+    	mov r1,r5 @ Carga el mismo dividor previamente guardado
+    	bl sdivide @ Implementa sdivide con r0,r1, dando r0 como resultado y r1 como residuo
+    	mov r6, r0 @ Guarda el Primer Decimal en r6
+    	mov r0,r4 @ Guarda en r0 el dividendo original para printf
+    	mov r1,r5 @ Guarda en r1 el divisor original para printf
+    	mov r2,#'/' @ Instancia r2 como operador de dividor para printf
+    	mov r3,r7 @ Guarda en r3 el resultado original de la división
+    	mov r4,r6 @ Guarda en r4 el primer decimal
+    	@ Imprimir
+    	b print_result
 
 
 
@@ -73,6 +88,18 @@ print_result:
     b stop
 
 read:
+	ldr r6,=num1
+	ldr r0,[r6]
+	ldr r6,=num2
+	ldr r1,[r6]
+	ldr r6,=ope
+	ldr r2,[r6]
+	ldr r6,=res
+	ldr r3, [r6]
+	ldr r6,=dec1
+	ldr r4,[r6]
+	ldr r6,=dec2
+	ldr r5,[r6]
 	b stop
 
 write:
@@ -82,5 +109,5 @@ write:
 	str r0, [r4]
 	str r1, [r5]
 	str r2, [r6]
-
-stop:	wfi
+	bx lr
+	.end
