@@ -9,7 +9,7 @@ ope:	.word 0
 res:	.word 0
 dec1:	.word 0
 dec2:	.word 0
-str_f: 	.asciz "Operando: %d %c %d = %d.%d"
+str_f: 	.asciz "%d %c %d = %d.%d"
 
 
 	.text
