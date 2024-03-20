@@ -69,11 +69,8 @@ divide:
 	ldr r1,[r3] @ Carga el mismo divisor previamente guardado
     	bl sdivide @ Implementa sdivide con r0,r1, dando r0 como resultado y r1 como residuo
 	ldr r3,=dec1
-	mov r4, pc
-	add r4,r4,#8
-	mov lr,r4
-	cmp r3,#0
-	bne write_dec    
+	add r0, r0, #48 @ En ascii los caracteres de numeros empiezan en 48
+	str r0,[r3] @ Guarda el Decimal en Memoria  
 
 	@ Calcular Segundo Decimal
 	mul r1, r6 @ Multiplica el Residuo por la base numerica
@@ -82,11 +79,8 @@ divide:
 	ldr r1,[r3] @ Carga el mismo divisor previamente guardado
     	bl sdivide @ Implementa sdivide con r0,r1, dando r0 como resultado y r1 como residuo
 	ldr r3,=dec2
-	mov r4, pc
-	add r4,r4,#8
-	mov lr,r4
-	cmp r3,#0
-	bne write_dec    
+	add r0, r0, #48 @ En ascii los caracteres de numeros empiezan en 48
+	str r0,[r3] @ Guarda el Decimal en Memoria   
 
 	@ Calcular Tercer Decimal
 	mul r1, r6 @ Multiplica el Residuo por la base numerica
@@ -95,11 +89,8 @@ divide:
 	ldr r1,[r3] @ Carga el mismo divisor previamente guardado
     	bl sdivide @ Implementa sdivide con r0,r1, dando r0 como resultado y r1 como residuo
 	ldr r3,=dec3
-	mov r4, pc
-	add r4,r4,#8
-	mov lr,r4
-	cmp r3,#0
-	bne write_dec    
+	add r0, r0, #48 @ En ascii los caracteres de numeros empiezan en 48
+	str r0,[r3] @ Guarda el Decimal en Memoria 
 	
 	ldr r3,=point
 	mov r4,#46
@@ -155,10 +146,5 @@ write:
 	str r0, [r4]
 	str r1, [r5]
 	str r2, [r6]
-	bx lr
-
-write_dec:
-	add r0, r0, #48 @ En ascii los caracteres de numeros empiezan en 48
-	str r0,[r3] @ Guarda el Decimal en Memoria
 	bx lr
 	.end
