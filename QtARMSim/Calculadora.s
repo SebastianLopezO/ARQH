@@ -7,9 +7,10 @@ num1:	.word 0
 num2: 	.word 0
 ope:	.word 0
 res:	.word 0
-dec1:	.word 0
-dec2:	.word 0
-str_f: 	.asciz "%d %c %d = %d.%d%d"
+point:  .word 32
+dec1:	.word 32
+dec2:	.word 32
+str_f: 	.asciz "%d %c %d = %d%c%c%c"
 
 
 	.text
@@ -67,6 +68,7 @@ divide:
 	ldr r1,[r3] @ Carga el mismo divisor previamente guardado
     	bl sdivide @ Implementa sdivide con r0,r1, dando r0 como resultado y r1 como residuo
 	ldr r3,=dec1
+	add r0, r0, #48 @ En ascii los caracteres de numeros empiezan en 48
 	str r0,[r3] @ Guarda el Primer Decimal en Memoria
 
 	@ Calcular Segundo Decimal
@@ -76,9 +78,12 @@ divide:
 	ldr r1,[r3] @ Carga el mismo divisor previamente guardado
     	bl sdivide @ Implementa sdivide con r0,r1, dando r0 como resultado y r1 como residuo
 	ldr r3,=dec2
+	add r0, r0, #48 @ En ascii los caracteres de numeros empiezan en 48
 	str r0,[r3] @ Guarda el Segundo Decimal en Memoria
 
-
+	ldr r3,=point
+	mov r4,#43
+	str r4, [r3]
     	@ Imprimir
     	b print_result
 
@@ -87,14 +92,14 @@ divide:
 print_result:
 	@ Carga de Memoria
 	bl read
-    	sub sp, sp, #20       @ Reserva espacio para cinco palabras (5*4 bytes = 20 bytes) en la pila
-	str r5, [sp, #16]     @ Almacena el resultado decimal en la tercera words adelante del stack pointer, mediante str
-   	str r4, [sp, #12]     @ Almacena el resultado decimal en la tercera words adelante del stack pointer, mediante str
+    	sub sp, sp, #24       @ Reserva espacio para cinco palabras (5*4 bytes = 20 bytes) en la pila
+	str r6, [sp, #20]     @ Almacena el resultado decimal en la quinta words adelante del stack pointer, mediante str
+   	str r5, [sp, #16]     @ Almacena el resultado decimal en la cuarta words adelante del stack pointer, mediante str
+	str r4, [sp, #12]     @ Almacena el puntero en la tercera words adelante del stack pointer, mediante str
     	str r3, [sp, #8]      @ Almacena el resultado en la segunda word adelante del stack pointer, mediante str
     	str r1, [sp, #4]      @ Almacena el segundo termino en la primer word del stack pointer, mediante str
     	str r2, [sp]          @ Almacena el operador en la word del stack pointer, mediante str
-    	mov r3, r0		  @ Almacena el primer termino una word antes del stack pointer, mediante str
-
+    	mov r3, r0	      @ Almacena el primer termino una word antes del stack pointer, mediante str
     	mov r0, #0           @ Columna para PrintF
     	mov r1, #0           @ Fila para PrintF
     	ldr r2, =str_f         @ Carga la dirección de la cadena de formato en r2
@@ -105,18 +110,20 @@ print_result:
     	b stop
 
 read:
-	ldr r6,=num1
-	ldr r0,[r6]
-	ldr r6,=num2
-	ldr r1,[r6]
-	ldr r6,=ope
-	ldr r2,[r6]
-	ldr r6,=res
-	ldr r3, [r6]
-	ldr r6,=dec1
-	ldr r4,[r6]
-	ldr r6,=dec2
-	ldr r5,[r6]
+	ldr r7,=num1
+	ldr r0,[r7]
+	ldr r7,=num2
+	ldr r1,[r7]
+	ldr r7,=ope
+	ldr r2,[r7]
+	ldr r7,=res
+	ldr r3, [r7]
+	ldr r7,=point
+	ldr r4, [r7]
+	ldr r7,=dec1
+	ldr r5,[r7]
+	ldr r7,=dec2
+	ldr r6,[r7]
 	bx lr
 
 write:
