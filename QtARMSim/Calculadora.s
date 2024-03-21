@@ -95,8 +95,41 @@ divide:
 	ldr r3,=point
 	mov r4,#46
 	str r4, [r3]
-    	@ Imprimir
+
+	@Quitar Decimales en Cero a la derecha
+	ldr r1,=dec3
+	ldr r0,[r1]
+	cmp r0,#48
+	beq two_dec
+	@ Imprimir
     	b print_result
+	
+two_dec: mov r0,#32
+	 str r0,[r1]
+	 ldr r1,=dec2
+	 ldr r0,[r1]
+	 cmp r0,#48
+	 beq one_dec
+	 @ Imprimir
+    	 b print_result
+
+one_dec: mov r0,#32
+	 str r0,[r1]
+	 ldr r1,=dec1
+	 ldr r0,[r1]
+	 cmp r0,#48
+	 beq zero_dec
+	 @ Imprimir
+    	 b print_result
+
+zero_dec:mov r0,#32
+	 str r0,[r1]
+	 ldr r1,=point
+	 str r0,[r1]
+	 @ Imprimir
+    	 b print_result
+	
+    	
 
 
 print_result:
