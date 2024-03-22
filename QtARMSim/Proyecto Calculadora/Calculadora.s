@@ -1,4 +1,4 @@
-	.data
+ 	.data
 
 	@ --------------
 	@ Inicialización
@@ -59,35 +59,65 @@ multiply:
     	b print_result
 
 divide:
-    	
     	bl sdivide @ Implementar sdivide con r0,r1, dejando r0 como resultado y r1 como residuo
 	ldr r3,=res
 	str r0,[r3]
-	@ Inicializar para Loop
-	mov r4,#1
-	mov r5,#5
+
+	@ Calcular Decimales
+
+	mov r4,#1 @ Inicializar Iterador
+	mov r5,#5 @ Rango final del Iterador
 loop_dec:
-	@ Calcular Primer Decimal
+	
+	@ Preparación del Residuo
 	mov r6,#10 @ Inicilizar base numerica
 	mul r1, r6 @ Multiplica el Residuo por la base numerica
     	mov r0,r1 @ Guarda el residuo*base n en r0 para sdivide, como nuevo dividendo
-	ldr r3,=num2	@ Referencia en Memeria para el divisor
+	
+	@ Carga de Divisor
+	ldr r3,=num2	@ Referencia en Memoria para el divisor
 	ldr r1,[r3] @ Carga el mismo divisor previamente guardado
+	
+	@ División
     	bl sdivide @ Implementa sdivide con r0,r1, dando r0 como resultado y r1 como residuo
+	
+	@ Configuración Dirección en Memoria dinamica
 	ldr r3,=point @ Referencia en memoria para Decimales
 	mov r6,#4 @ Bytes de Desplazamiento
 	mov r7,r4 @ Copias Iterador
 	mul r7,r6 @ Numero de Iteración * 4 bits, para acceder al decimal correspondiente de la Iteración
+
+	@ Carga de Resultado
 	add r0, r0, #48 @ En ascii los caracteres de numeros empiezan en 48
 	str r0,[r3,r7] @ Guarda el Decimal en Memoria  
+
 	add r4,r4,#1 @Incrementa en Uno
 	cmp r4,r5 @ Comparar Inicio y Final
 	bne loop_dec
 	
+	@ Colocar el Punto de Decimal
 	ldr r3,=point
 	mov r4,#46
 	str r4, [r3]
+	
+	@ Redondear
+		
+	@ Carga Decimal
+	ldr r2,=dec3
+	ldr r0,[r2]
 
+	@Carga Decimal Extra
+	ldr r3,=dec4
+	ldr r1,[r3]
+	
+	cmp r1,#53
+	blt continue
+	
+	@ Cambia el Decimal
+	add r0,r0,#1
+	str r0,[r2]
+
+continue:
 	@Quitar Decimales en Cero a la derecha
 	ldr r1,=dec3
 	ldr r0,[r1]
