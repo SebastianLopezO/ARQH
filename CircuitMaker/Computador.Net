@@ -1,0 +1,26 @@
+*Spice netlist for Circuit: C:\Users\Edu\Documents\CircuitMaker\Computador.CKT
+VDVCC 14 0 DC 5
+* BEGIN Adding ADC and/or DAC
+A1 [16 17 23] [OR_6 notA_1 14] dac_mod
+A2 [19 20 21 22] [And_6 And_3 notB_4 notA_2] dav_mod
+A3 [0 notA_1 14] [15 18 24] adc_mod
+.model dav_mod xdav
+.model dac_mod xdac
+.model adc_mod xadc
+* END adding ADC and/or DAC
+
+RMM1 OR_6 V1_1 100.0Meg
+V1 V1_1 notA_1 DC 5V
+AOR [24 15 20 19][23 20 19 16] A74LS32
+And [24 15 18 18][23 17 17 19] A74LS08
+And [24 15 22 21][23 22 21 20] A74LS08
+AnotB [24 15 18][23 17 21] A74LS04
+AnotA [24 15 18][23 17 22] A74LS04
+.SAVE OR_6 notA_1 V1_1 And_6 And_3 notB_4 notA_2 rmm1#branch @v1[p] v1#branch
+.SAVE @v1[z]
+
+* Selected Circuit Analyses :
+.OP
+
+* Models/Subcircuits Used:
+.END
